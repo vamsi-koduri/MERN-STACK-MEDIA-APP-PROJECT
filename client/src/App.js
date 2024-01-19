@@ -1,45 +1,31 @@
-import React, { useEffect,useState } from 'react';
+import React from "react";
+import { Container } from "@material-ui/core";
+import Navbar from "./components/Navbar/Navbar.js";
+import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
 
-import { Container, AppBar, Typography, Grow, Grid } from '@material-ui/core';
-import { useDispatch } from 'react-redux';
-
-import { getPosts } from './actions/posts.js'
-import Posts from './components/Posts/Posts.js';
-import Form from './components/Form/Form.js';
-import memories from "./images/memories.png";
-import useStyles from './styles.js'
-
+import PostDetails from "./components/PostDetails/PostDetails.jsx";
+import Home from "./components/Home/Home.js";
+import Auth from "./components/Auth/Auth.js";
 
 const App = () => {
-    const[currentId,setCurrentId]=useState(null);
-    const classes = useStyles();
-    const dispatch = useDispatch();
-    useEffect(() => {
-        dispatch(getPosts());
-    }, [currentId,dispatch]);
-    return (
-        <Container maxWidth="lg" >
-
-            <AppBar className={classes.appBar} position='static' color='inherit'>
-                <Typography className={classes.heading} variant='h2' align='center'>
-                    Memories
-                </Typography>
-                <img className={classes.image} src={memories} alt='memories' height='60' />
-            </AppBar>
-            <Grow in>
-                <Container >
-                    <Grid className={classes.mainContainer} container justifyContent="space-between" alignItems='stretch' spacing={3}>
-                        <Grid item xs={12} sm={7}>
-                            <Posts setCurrentId={setCurrentId}/>
-                        </Grid>
-                        <Grid item xs={12} sm={4}>
-
-                            <Form currentId={currentId} setCurrentId={setCurrentId}/>
-                        </Grid>
-                    </Grid>
-                </Container>
-            </Grow>
-        </Container>
-    )
-}
+  const user = JSON.parse(localStorage.getItem("profile"));
+  return (
+    <BrowserRouter>
+      <Container maxWidth="xl">
+        <Navbar />
+        <Switch>
+          <Route path="/" exact component={() => <Redirect to="/posts" />} />
+          <Route path="/posts" exact component={Home} />
+          <Route path="/posts/search" exact component={Home} />
+          <Route path="/posts/:id" component={PostDetails} />
+          <Route
+            path="/auth"
+            exact
+            component={() => (!user ? <Auth /> : <Redirect to="/posts" />)}
+          />
+        </Switch>
+      </Container>
+    </BrowserRouter>
+  );
+};
 export default App;
