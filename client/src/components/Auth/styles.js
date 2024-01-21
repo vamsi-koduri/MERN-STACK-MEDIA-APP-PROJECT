@@ -29,6 +29,5 @@ export default makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    display: "flex",
   },
 }));
