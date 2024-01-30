@@ -26,6 +26,16 @@ const Posts = (state = { isLoading: true, posts: [] }, action) => {
           post._id === action.payload._id ? action.payload : post
         ),
       };
+    case "COMMENT":
+      return {
+        ...state,
+        posts: state.posts.map((post) => {
+          if (post._id === action.payload._id) {
+            return action.payload;
+          }
+          return post;
+        }),
+      };
     case FETCH_ALL:
       return {
         ...state,
