@@ -1,9 +1,9 @@
 import axios from "axios";
-import * as dotenv from "dotenv";
+import dotenv from "dotenv";
 
 dotenv.config();
 
-const API = axios.create({ baseURL: process.env.URL });
+const API = axios.create({ baseURL: "https://memories-app-5h82.onrender.com" });
 
 API.interceptors.request.use((req) => {
   if (localStorage.getItem("profile")) {
